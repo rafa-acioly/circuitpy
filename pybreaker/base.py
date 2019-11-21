@@ -2,7 +2,7 @@ import abc
 from typing import Tuple
 
 
-class BaseCircuitBreaker(metaclass=abc.ABC):
+class BaseCircuitBreaker(abc.ABC):
 
     @abc.abstractmethod
     def increment(self) -> None:
