@@ -4,16 +4,16 @@ from pybreaker.base import BaseCircuitBreaker
 from pybreaker.exceptions import CircuitBreakerOpen
 
 
-def circuit_breaker(circuit: BaseCircuitBreaker):
-    def circuit_breaker_method(method):
+def circuit_breaker(handler: BaseCircuitBreaker):
+    def factory(method):
         @wraps(method)
-        def circuit_breaker_wrapper(*args, **kwargs):
+        def circuit(*args, **kwargs):
             try:
                 return method(*args, **kwargs)
-            except circuit.catch_exceptions:
-                if circuit.is_open():
-                    raise CircuitBreakerOpen
+            except handler.catch_exceptions:
+                if handler.is_open():
+                    raise CircuitBreakerOpen(method)
 
-                circuit.increment()
-        return circuit_breaker_wrapper
-    return circuit_breaker_method
+                handler.ping()
+        return circuit
+    return factory
