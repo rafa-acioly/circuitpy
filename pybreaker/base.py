@@ -24,7 +24,7 @@ class Storage(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def get(self) -> int:
+    def get(self, key: str) -> int:
         """Get
 
             Should retrieve the value for the
