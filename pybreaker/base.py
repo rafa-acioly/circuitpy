@@ -2,30 +2,75 @@ import abc
 from typing import Tuple
 
 
+class Storage(abc.ABC):
+
+    @abc.abstractmethod
+    def increment(self, key: str) -> int:
+        """Increment
+
+            Should increment a value to
+            keep track of how many errors
+            occurs so the circuit breaker can open
+        """
+        pass
+
+    @abc.abstractmethod
+    def expire(self, key: str, ttl: int) -> None:
+        """Expire
+
+            Should set a time to live (ttl) on the key,
+            the key should automatically vanish after the ttl defined
+        """
+        pass
+
+    @abc.abstractmethod
+    def get(self) -> int:
+        """Get
+
+            Should retrieve the value for the
+            failure_key
+        """
+        pass
+
+
 class BaseCircuitBreaker(abc.ABC):
 
     @abc.abstractmethod
-    def increment(self) -> None:
-        raise Exception(
-            'an increment method should be defined '
-            'on circuit breaker handler'
-        )
+    def storage(self) -> Storage:
+        """Storage
+
+            Should retrieve a instance of Storage
+            that will be used to keep the circuit breaker
+            status
+        """
+        pass
 
     @abc.abstractmethod
     def catch_exceptions(self) -> Tuple[Exception]:
-        raise Exception(
-            'an exception class should be defined '
-            'on circuit breaker handler so you can except for it '
-            'when the circuit is open'
-        )
+        """Catch exceptions
+
+            Should return a tuple of all exceptions
+            that will be used to compute a fail
+            and increment the circuit breaker
+        """
+        pass
 
     @abc.abstractmethod
-    def is_open(self) -> bool:
-        raise Exception(
-            'an validation method is_open should be defined '
-            'on circuit breaker handler'
-        )
+    def max_failures(self) -> int:
+        """Max failures
+            The amount of failures required to open the circuit.
+        """
+        pass
 
+    @abc.abstractmethod
+    def timeout(self) -> int:
+        """Timeout
+
+            Defines for how long the circuit key will remain in seconds,
+            until it close the circuit again.
+        """
+        pass
+    
     @abc.abstractmethod
     def failure_key(self) -> str:
         """Failure key
@@ -33,27 +78,22 @@ class BaseCircuitBreaker(abc.ABC):
             Defines the key that will be used to store
             the circuit breaker errors counter.
         """
-        raise Exception(
-            'an key should be defined '
-            'to track the errors amount'
-        )
+        pass
 
-    @abc.abstractmethod
-    def max_failures(self) -> int:
-        """Max failures
-            The amount of failures required to open the circuit.
+    def is_open(self) -> bool:
+        """Is open
+
+            Return rather the circuit is open or not
         """
-        raise Exception('the max failure amount should be defined')
+        return self.storage.get() >= self.max_failures
 
-    @abc.abstractmethod
-    def timeout(self) -> int:
-        """timeout
+    def ping(self) -> None:
+        """Ping
 
-            Defines for how long the circuit key will remain,
-            until it close the circuit again.
+            Increment the failure key when some of
+            the Exceptions defined on catch_exceptions occurs.
+            Every time that the key is incremented the expire
+            time will be renew
         """
-        raise Exception(
-            'an timeout should be defined '
-            'so the circuit can close properly'
-        )
-
+        self.storage.increment(self.failure_key)
+        self.storage.expire(self.failure_key, self.timeout)
