@@ -7,16 +7,15 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='circuitpy',
-    version='0.0.1',
     long_description=long_description,
     long_description_content_type='text/markdown',
+    version='0.0.1',
     author='Rafael Acioly',
     author_email='aciolyr@gmail.com',
     packages=['circuitpy'],
     description='A simple circuit breaker implementation',
-    keyworkds=['circuit', 'breaker', 'integration'],
+    keywords=['circuit', 'breaker', 'integration'],
     license="MIT",
     url='https://github.com/rafa-acioly/circuitpy',
-    download_url='https://github.com/rafa-acioly/circuitpy',
-    test_suite='tests'
+    download_url='https://github.com/rafa-acioly/circuitpy'
 )

@@ -23,7 +23,6 @@ all the failures.
 import redis
 from circuitpy.base import BaseCircuitBreaker
 
-
 redis_cli = redis.Redis(host='localhost', port=6379, db=0)
 
 class RequestCircuitBreaker(BaseCircuitBreaker):
@@ -48,7 +47,7 @@ class CustomStorage(Storage):
 
     def get(self, key: str) -> int:
         """retrieve the errors quantity"""
-    
+
     def expire(self, key: str, ttl: int) -> None:
         """implement some sort of expiration for the key parameter"""
 ```
