@@ -58,7 +58,7 @@ from pybreaker.base import BaseCircuitBreaker
 
 class RequestCircuitBreaker(BaseCircuitBreaker):
 
-    storage = MySQLStorage()
+    storage = CustomStorage()
     catch_exceptions = (Exception, KeyError,)
     max_failures = 100
     timeout = 1
