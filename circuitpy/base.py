@@ -46,8 +46,8 @@ class BaseCircuitBreaker(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def catch_exceptions(self) -> Tuple[Exception]:
-        """Catch exceptions
+    def expected_exception(self) -> Tuple[Exception]:
+        """Expected exceptions
 
             Should return a tuple of all exceptions
             that will be used to compute a fail
@@ -56,15 +56,15 @@ class BaseCircuitBreaker(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def max_failures(self) -> int:
-        """Max failures
+    def failure_threshold(self) -> int:
+        """Failure threshold
             The amount of failures required to open the circuit.
         """
         pass
 
     @abc.abstractmethod
-    def timeout(self) -> int:
-        """Timeout
+    def recovery_timeout(self) -> int:
+        """Recovery timeout
 
             Defines for how long the circuit key will remain in seconds,
             until it close the circuit again.
@@ -85,7 +85,7 @@ class BaseCircuitBreaker(abc.ABC):
 
             Return rather the circuit is open or not
         """
-        return self.storage.get(self.failure_key) >= self.max_failures
+        return self.storage.get(self.failure_key) >= self.failure_threshold
 
     def ping(self) -> None:
         """Ping

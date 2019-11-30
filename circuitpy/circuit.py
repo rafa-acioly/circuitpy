@@ -1,7 +1,7 @@
 from functools import wraps
 
-from pycircuit.base import BaseCircuitBreaker
-from pycircuit.exceptions import CircuitBreakerOpen
+from circuitpy.base import BaseCircuitBreaker
+from circuitpy.exceptions import CircuitBreakerOpen
 
 
 def circuit_breaker(handler: BaseCircuitBreaker):
@@ -10,7 +10,7 @@ def circuit_breaker(handler: BaseCircuitBreaker):
         def circuit(*args, **kwargs):
             try:
                 return method(*args, **kwargs)
-            except handler.catch_exceptions:
+            except handler.expected_exception:
                 if handler.is_open():
                     raise CircuitBreakerOpen(method)
 

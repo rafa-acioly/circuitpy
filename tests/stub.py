@@ -1,4 +1,4 @@
-from pycircuit.base import BaseCircuitBreaker
+from circuitpy.base import BaseCircuitBreaker
 
 
 class StubStorage:
@@ -17,7 +17,7 @@ class StubStorage:
 
 class StubHandler(BaseCircuitBreaker):
     storage = StubStorage()
-    catch_exceptions = (Exception,)
-    max_failures = 0
-    timeout = 1
+    expected_exception = (Exception,)
+    failure_threshold = 0
+    recovery_timeout = 1
     failure_key = "myhandler_cb"

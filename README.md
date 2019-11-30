@@ -1,13 +1,13 @@
-# Pycircuit
+# circuitpy
 
-pycircuit is a abstract Python library for dealing with circuit breakers.
+circuitpy is a abstract Python library for dealing with circuit breakers.
 
 ## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
 ```bash
-pip install pycircuit
+pip install circuitpy
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ all the failures.
 
 ```python
 import redis
-from pycircuit.base import BaseCircuitBreaker
+from circuitpy.base import BaseCircuitBreaker
 
 
 redis_cli = redis.Redis(host='localhost', port=6379, db=0)
@@ -39,7 +39,7 @@ class RequestCircuitBreaker(BaseCircuitBreaker):
 ## Using custom storage
 
 ```python
-from pycircuit.base import Storage
+from circuitpy.base import Storage
 
 class CustomStorage(Storage):
 
@@ -54,7 +54,7 @@ class CustomStorage(Storage):
 ```
 
 ```python
-from pycircuit.base import BaseCircuitBreaker
+from circuitpy.base import BaseCircuitBreaker
 
 class RequestCircuitBreaker(BaseCircuitBreaker):
 
@@ -68,7 +68,7 @@ class RequestCircuitBreaker(BaseCircuitBreaker):
 ## Implementation
 
 ```python
-from pycircuit.circuit import circuit_breaker
+from circuitpy.circuit import circuit_breaker
 
 @circuit_breaker(handler=RequestCircuitBreaker())
 def lazy_method():
@@ -81,4 +81,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## License
-[MIT](https://github.com/rafa-acioly/pycircuit/LICENSE)
+[MIT](https://github.com/rafa-acioly/circuitpy/LICENSE)
