@@ -8,6 +8,7 @@ setup(
     packages=['pybreaker'],
     description='A simple circuit breaker implementation',
     keyworkds=['circuit breaker'],
+    license="MIT",
     url='https://github.com/rafa-acioly/pybreaker',
-    download_url=''
+    download_url='https://github.com/rafa-acioly/pybreaker'
 )
