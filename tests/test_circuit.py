@@ -1,9 +1,9 @@
 from unittest.mock import Mock, MagicMock, patch
 import pytest
 
-from pybreaker.circuit import circuit_breaker
-from pybreaker.exceptions import CircuitBreakerOpen
-from pybreaker.base import BaseCircuitBreaker
+from pycircuit.circuit import circuit_breaker
+from pycircuit.exceptions import CircuitBreakerOpen
+from pycircuit.base import BaseCircuitBreaker
 from .stub import StubStorage, StubHandler
 
 

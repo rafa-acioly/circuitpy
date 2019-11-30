@@ -1,4 +1,4 @@
-from pybreaker.base import BaseCircuitBreaker
+from pycircuit.base import BaseCircuitBreaker
 
 
 class StubStorage:

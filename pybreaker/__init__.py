@@ -1,1 +1,0 @@
-from pybreaker.circuit import circuit_breaker  # noqa

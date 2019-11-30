@@ -1,7 +1,7 @@
 from functools import wraps
 
-from pybreaker.base import BaseCircuitBreaker
-from pybreaker.exceptions import CircuitBreakerOpen
+from pycircuit.base import BaseCircuitBreaker
+from pycircuit.exceptions import CircuitBreakerOpen
 
 
 def circuit_breaker(handler: BaseCircuitBreaker):
