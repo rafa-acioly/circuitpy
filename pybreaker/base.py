@@ -70,7 +70,7 @@ class BaseCircuitBreaker(abc.ABC):
             until it close the circuit again.
         """
         pass
-    
+
     @abc.abstractmethod
     def failure_key(self) -> str:
         """Failure key
@@ -85,7 +85,7 @@ class BaseCircuitBreaker(abc.ABC):
 
             Return rather the circuit is open or not
         """
-        return self.storage.get() >= self.max_failures
+        return self.storage.get(self.failure_key) >= self.max_failures
 
     def ping(self) -> None:
         """Ping
