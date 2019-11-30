@@ -1,5 +1,5 @@
 import pytest
-from stub import StubHandler
+from .stub import StubHandler
 
 
 @pytest.fixture
