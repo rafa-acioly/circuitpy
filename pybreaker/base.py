@@ -5,7 +5,7 @@ from typing import Tuple
 class Storage(abc.ABC):
 
     @abc.abstractmethod
-    def increment(self, key: str) -> int:
+    def increment(self, key: str) -> None:
         """Increment
 
             Should increment a value to
