@@ -1,6 +1,6 @@
-# circuitpy
+# Circuitpy
 
-circuitpy is a abstract Python library for dealing with circuit breakers.
+Circuitpy is a abstract Python library for dealing with circuit breakers, it makes easy to use with anything or anywhere, you can use with `redis`, `sql`, `in memory cache`, `apis` and etc.
 
 ## Installation
 
@@ -12,10 +12,9 @@ pip install circuitpy
 
 ## Usage
 
-Implement your storage handler so the circuit breaker can store
-all the failures.
+First you need to choose which storage you gonna use, you can use anything as storage since it implements three methods from [`Storage` interface](https://github.com/rafa-acioly/circuitpy/blob/master/circuitpy/base.py#L5)
 
-> **You can use the redis lib that already have this methods**
+> **Tip: Redis lib already has this methods by default, so it's easy to use.**
 
 ## Using redis
 
@@ -28,9 +27,9 @@ redis_cli = redis.Redis(host='localhost', port=6379, db=0)
 class RequestCircuitBreaker(BaseCircuitBreaker):
 
     storage = redis_cli
-    catch_exceptions = (Exception, KeyError,)
-    max_failures = 100
-    timeout = 1
+    expected_exception = (Exception,)
+    failure_threshold = 100
+    recovery_timeout = 1
     failure_key = "request_cb"
 ```
 
@@ -58,9 +57,9 @@ from circuitpy.base import BaseCircuitBreaker
 class RequestCircuitBreaker(BaseCircuitBreaker):
 
     storage = CustomStorage()
-    catch_exceptions = (Exception, KeyError,)
-    max_failures = 100
-    timeout = 1
+    expected_exception = (Exception,)
+    failure_threshold = 100
+    recovery_timeout = 1
     failure_key = "request_cb"
 ```
 
@@ -68,10 +67,14 @@ class RequestCircuitBreaker(BaseCircuitBreaker):
 
 ```python
 from circuitpy.circuit import circuit_breaker
+from circuitpy.exceptions import CircuitBreakerOpen
 
 @circuit_breaker(handler=RequestCircuitBreaker())
 def lazy_method():
-    pass
+    try:
+        # do stuff
+    except CircuitBreakerOpen as open_circuit:
+        logger.info(open_circuit)
 ```
 
 ## Contributing
