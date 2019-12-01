@@ -17,8 +17,10 @@ class TestCircuitBreaker:
         """
         Test method raise the circuit breaker default exception
         """
-        with pytest.raises(CircuitBreakerOpen):
-            circuit_handler(Mock(side_effect=Exception))()
+        with pytest.raises(CircuitBreakerOpen), \
+                patch.object(BaseCircuitBreaker, 'is_open') as mock_base:
+            mock_base.return_value = True
+            circuit_handler(Mock())()
 
     def test_circuit_ping_storage(self, circuit_handler):
         """
@@ -29,3 +31,10 @@ class TestCircuitBreaker:
             mock_base.return_value = False
             circuit_handler(Mock(side_effect=Exception))()
             assert mock_ping.called
+
+    def test_call_method_when_circuit_is_closed(self, circuit_handler):
+        with patch.object(BaseCircuitBreaker, 'is_open') as mock_base:
+            mock_base.return_value = False
+            mocked_func = Mock()
+            circuit_handler(mocked_func)()
+            assert mocked_func.called

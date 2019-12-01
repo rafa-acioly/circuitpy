@@ -8,12 +8,11 @@ def circuit_breaker(handler: BaseCircuitBreaker):
     def factory(method):
         @wraps(method)
         def circuit(*args, **kwargs):
+            if handler.is_open():
+                raise CircuitBreakerOpen(method)
             try:
                 return method(*args, **kwargs)
             except handler.expected_exception:
-                if handler.is_open():
-                    raise CircuitBreakerOpen(method)
-
                 handler.ping()
         return circuit
     return factory
